@@ -23,6 +23,9 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { AntDesign } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
+import { createStackNavigator } from '@react-navigation/stack';
+import Profile from './screens/profile';
+
 
 const Tab =createBottomTabNavigator()
 
@@ -40,9 +43,37 @@ const screenO ={
   }
 } 
 
-const App=()=>{
-  return <NavigationContainer>
-    <Tab.Navigator screenOptions={screenO} >
+
+
+
+const Stack = createStackNavigator();
+function Giris() {
+  return (
+    
+      <Stack.Navigator >
+         
+        <Stack.Screen 
+          name="account" 
+          component={Account} 
+          options={{ headerShown: false }} // Giriş ekranında başlık gizleme
+        />
+        
+      <Stack.Screen 
+                name="profile" 
+                component={Profile} 
+                options={{ headerShown: false }} // Giriş ekranında başlık gizleme
+              />
+       
+
+        
+        
+      </Stack.Navigator>
+    
+  );
+}
+
+const Alt=()=>{
+  return ( <Tab.Navigator screenOptions={screenO} >
       <Tab.Screen
       name="home"
       component={Home}
@@ -56,7 +87,7 @@ const App=()=>{
       />
       <Tab.Screen 
       name="Account"
-       component={Account}
+       component={Giris}
        options={{
         tabBarShowLabel:false,
         tabBarIcon: ({focused})=>{
@@ -77,9 +108,29 @@ const App=()=>{
           </View>)}}}
        />
       
-    </Tab.Navigator>
-   </NavigationContainer>
+    </Tab.Navigator>)
+   
 }
+
+
+
+
+
+const App=()=>{
+  return(
+
+    <NavigationContainer>
+      <Alt />
+    </NavigationContainer>
+  )
+};
+
+
+
+
+
+
+
 export default App;
 
 

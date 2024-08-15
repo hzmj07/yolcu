@@ -13,79 +13,70 @@ import {
   KeyboardAvoidingView
 } from 'react-native';
 
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
-import Auth from '../firebaseConfig';
-
-
-
+import Login from './signin/login';
+import Registar from './signin/registar';
 
 
 const Account =() => {
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [message, setMessage] = useState('');
+  const [login, setLogin] = useState(true);
+  const [registar, setRegistar] = useState (false);
 
-
-  const register = async()=> {
-    try{
-      const userData = await createUserWithEmailAndPassword(Auth , email , password)
-      console.log("registar successful")
-    }
-    catch(error){
-      console.error(error)
-    }
+  function Komutlogin() {
+     setLogin(true) ,
+     setRegistar(false)
   }
 
+  function Komutregistar() {
+     setRegistar(true) ,
+    setLogin(false)
+  };
 
 
-    const login = async()=> {
-      try{
-        const userData = await signInWithEmailAndPassword(Auth , email , password)
-        console.log("login successful")
-      }
-      catch(error){
-        console.error(error)
-      }
-    } 
+ 
+
+  
+   
+
+
+
 
   return(
     <KeyboardAvoidingView style={styles.mainview} >
 
       <View style={styles.view} >
-      <TextInput
-        style={styles.input}
-        placeholder="E-posta"
-        value={email}
-        onChangeText={setEmail}
-      />
 
 
-<TextInput
-        style={styles.input2}
-        placeholder="Şifre"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-      />
+      <View style={styles.buton2} >
 
       <Pressable
-      onPress={login}
+      onPress={ Komutlogin }
       style={styles.buton}>
-        <Text style={[{color:"white"}]} >Giriş Yap</Text>
-      </Pressable>
-     
-
-      <Pressable 
-      onPress={register}
-      style={styles.buton2}  >
-        <Text style={[{color:"white"}]} >Kayıt Ol</Text>
+        <Text style={[{color:"white" , fontSize:22
+        }]} >Giriş Yap</Text>
       </Pressable>
 
+      <Pressable
+      onPress={Komutregistar}
+      style={styles.buton}>
+        <Text style={[{color:"white",fontSize:22}]} >Kayıt Ol</Text>
+      </Pressable>
+
+      </View>
 
 
 
-    
+
+
+        <View style={styles.cheldview} >
+          { login ? <Login/> : true}
+          { registar ? <Registar/> : null }
+
+
+
+          
+          </View>  
+          
       </View>
 
     </KeyboardAvoidingView>
@@ -99,7 +90,8 @@ const styles = StyleSheet.create({
     justifyContent:"center"
   },
   view:{
-    height:"42%",
+   
+    height:"60%",
     width:"85%",
     borderWidth:0,
     borderRadius:16,
@@ -108,7 +100,7 @@ const styles = StyleSheet.create({
     justifyContent:"center"
   },
   input:{
-    borderWidth:2,
+    borderWidth:0,
     borderRadius:16,
     height:"10%",
     width:"60%",
@@ -117,7 +109,7 @@ const styles = StyleSheet.create({
   },
 
   input2:{
-    borderWidth:2,
+    borderWidth:0,
     borderRadius:16,
     height:"10%",
     width:"60%",
@@ -128,26 +120,34 @@ const styles = StyleSheet.create({
   
   buton:{
     width:"30%",
-    height:"10%",
+    height:"100%",
     backgroundColor:"#03346E",
     alignItems:"center",
     justifyContent:"center",
     borderRadius:16,
+    marginLeft:12,
     marginBottom:12
   },
 
     buton2:{
-      width:"20%",
-      height:"7%",
-      backgroundColor:"#6EACDA",
+      flexDirection: 'row',
+      height:"10%",
+      borderWidth:0,
       alignItems:"center",
-      justifyContent:"center",
-      borderRadius:16
+      justifyContent:"center"
   
     },
     tinyLogo:{
       height:50,
       width:50
+    },
+    cheldview:{
+      flex:0,
+      borderWidth:0,
+      height:"70%",
+      width:"100%",
+      justifyContent:"center",
+      alignItems:"center"
     }
 
 });
