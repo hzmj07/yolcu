@@ -1,8 +1,14 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getFirestore, collection, getDocs } from 'firebase/firestore/lite';
+import {  collection, getDocs } from 'firebase/firestore/lite';
 import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
+import { Firestore } from "firebase/firestore";
+
+import firebase from 'firebase/app';
+import 'firebase/firestore';
+import 'firebase/auth'
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -18,20 +24,17 @@ const firebaseConfig = {
   measurementId: "G-YPNL7CV8J7"
 };
 
-
+console.log("kontrol")
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const Auth = getAuth(app);
 
-const analytics = getAnalytics(app);
-const db = getFirestore(app);
 
-async function getCities(db) {
-  const citiesCol = collection(db, 'cities');
-  const citySnapshot = await getDocs(citiesCol);
-  const cityList = citySnapshot.docs.map(doc => doc.data());
-  return cityList;
-}
 
-export default Auth;
+
+
+export default app
+
+
+
+

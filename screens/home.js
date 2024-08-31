@@ -5,7 +5,7 @@
  * @format
  */
 
-import React from 'react';
+import React,{useEffect , useState} from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -14,61 +14,164 @@ import {
   Text,
   useColorScheme,
   View,
-  TextInput
+  TextInput,
+  Image,
+  ActivityIndicator
 } from 'react-native';
+
+import { getFirestore } from "firebase/firestore";
+import { Loading } from './loading';
+import  app  from '../firebaseConfig';
+
+
+import { collection, getDocs , addDoc } from "firebase/firestore"; 
+
+const db = getFirestore(app)
 
 
 const Home =() => {
 
-  return<View style={styles.safeview}  >
+ 
 
-  <View style={styles.view1}>
-    <Text>
-    </Text>
-    <Text>
-    </Text>
 
-   <Text style={styles.baslik} >YOLCU</Text>
+  const [posts , setPosts] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [veri , setVeri] =useState([]);
+ 
 
-   <TextInput
-      style={styles.input}
-      placeholder="Nereden"
-    />
-    <TextInput
-      style={styles.input}
-      placeholder="Nereye"
-    />
 
-  </View>
-  <View style={styles.view2}  >
-    <Text>data</Text>
-  </View>
+  const fetchData = async () => { 
+    const fetchedPosts = []; // async ekledik
+    const querySnapshot = await getDocs(collection(db, "posts"));
+   // console.log(querySnapshot)
+    querySnapshot.forEach((doc) => {
+      const data =(doc.data()) ;
+      fetchedPosts.push(data);
 
-  <View style={styles.view2}  >
-    <Text>data</Text>
-  </View>
 
-  <View style={styles.view2}  >
-    <Text>data</Text>
-  </View>
-
-  <View style={styles.view2}  >
-    <Text>data</Text>
-  </View>
-
-  <View style={styles.view2}  >
-    <Text>data</Text>
-  </View>
+      
+    },)
+    setPosts(fetchedPosts)
+    setLoading(true)
+   //console.log("gelenveri" , data )
+   console.log("Çekilen Veriler:", fetchedPosts)
+   console.log("Posts Durumu:", posts)
+   console.log("Posts Türü:", typeof posts)
+    ;}
 
 
 
-</View>
+  
 
+  
+ 
+  
+ 
+  
+      useEffect(()=>{
+   
+         fetchData();
+         console.log(loading);
+      },[])
+
+
+     
+
+
+     // async fonksiyon çağrısı
+  
+
+const renderPosts =()=>{
+  
 }
 
+
+
+// Tüm belgeleri çağırma ve log ile yazdırma
+
+
+  return<SafeAreaView style={styles.safeview}  >
+
+  <View style={styles.view1}>
+    
+<View style={[{marginLeft:"8%"}]} >
+
+   <Text style={styles.baslik} >Postlar</Text>
+</View>
+  
+
+   
+  </View>
+
+
+<ScrollView style={styles.scroll}   >
+
+
+{ loading ? posts.map((value,index)=>{
+  return( <View
+   key={index}
+   style={styles.data}  >
+
+
+
+   <View style={styles.dataelememt} >
+ 
+    <View style={styles.minCom} >
+   <Image
+       style={styles.profilp}
+        source={require('../sorce/profil.jpg')}
+      />
+    </View>
+ 
+ <View  style={styles.minCom} >
+      <Text>{value.author}</Text>
+ </View>
+ 
+ 
+ 
+ <View style={styles.minCom}  >
+      <Text></Text>
+ </View>
+ 
+ 
+    </View> 
+ 
+    <View style={[{width :"100%",alignItems:"center",justifyContent:"center",borderWidth:0
+    }]} >
+    <Text style={styles.text} >{value.content}</Text>
+      </View>
+  
+  </View>
+)
+
+})
+   
+   : <View style={[{flex:1}]} >
+       <Loading/>
+    </View> }
+ 
+
+     
+  
+ 
+
+ 
+
+       
+
+
+   
+
+  
+</ScrollView>
+
+</SafeAreaView>
+
+}
+//daha sonra çözülcek sorun bottumtab ın altınada kalan data parçaları
 const styles = StyleSheet.create({
 baslik : {
-  fontSize:60,
+  fontSize:30,
   fontWeight:"bold",
 
 },
@@ -76,17 +179,19 @@ safeview: {
  borderWidth:0,
  flex:1,
  alignItems:"center",
+ justifyContent:"center",
  backgroundColor:"#E2E2B6"  
 },
 
 view1:{
-  alignItems:"center",
+
+  justifyContent:"center",
   borderWidth:0,
   backgroundColor:"white",
   width:"100%",
   borderRadius:14,
-  height:"30%",
-  marginBottom:6
+  height:"10%",
+  marginBottom:6,
 },
 input :{
   borderWidth:2,
@@ -96,15 +201,45 @@ input :{
   margin:6,
   textAlign:"center"
 },
-view2:{
-  alignItems:"center",
-  justifyContent:"center",
+data:{
+  flex:1,
+
   borderWidth:0,
   backgroundColor:"white",
-  width:"90%",
-  borderRadius:14,
-  height:"10%",
+  width:"auto",
+  borderRadius:16,
+  height:"auto",
   margin:6
+},
+text:{
+  fontSize:20
+
+},
+dataelememt:{
+   flexDirection: 'row',
+   width:"100%",
+   height:"30%",
+ alignItems:"center",
+   borderWidth:0
+
+
+},
+profilp:{
+  height:30,
+  width:30,
+  borderRadius:50
+
+},
+scroll:{
+  flex:1,
+  width:"100%",
+  height:"100%",
+  borderWidth:0,
+  flexGrow: 1,
+  
+},
+minCom:{
+marginLeft:16
 }
 });
 export default Home;

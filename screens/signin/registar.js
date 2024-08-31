@@ -13,10 +13,13 @@ import {
   KeyboardAvoidingView
 } from 'react-native';
 
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
-import Auth from '../../firebaseConfig';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import app from '../../firebaseConfig';
+import { useNavigation } from '@react-navigation/native';
 
+import { getAuth } from 'firebase/auth';
 
+const Auth =getAuth(app)
 
 
 const Registar=()=>{
@@ -27,22 +30,40 @@ const Registar=()=>{
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [message, setMessage] = useState('');
+  const [userName, setUserName] = useState('');
+  const [lastName , setLastName ]= useState(''); 
+  const navigation = useNavigation();
   
 console.log(email)
 
-const register = async()=> {
-  try{
-    const userData = await createUserWithEmailAndPassword(Auth , email , password)
-    console.log("registar successful");
-    console.log(userData.user.email)
-
-  }
-  catch(error){
-    console.error(error)
-  }
+function login(){
+  navigation.navigate("login");
 }
 
+const register = async () => {
+  try {
+    const userData = await createUserWithEmailAndPassword(Auth, email, password);
+
+    // Kullanıcının   
+ //profilini güncelle
+    await updateProfile(userData.user, {
+      displayName: userName,
+      lastName: lastName,
+    });
+
+
+    const posta = userData.user.email
+    const username = userData.user.displayName
+
+
+
+    navigation.navigate("login");
+    console.log('Kullanıcı kaydı başarılı:', userData.user);
+    
+  } catch (error) {
+    console.error('Hata oluştu:', error);
+  }
+};
 
 
 
@@ -50,18 +71,50 @@ const register = async()=> {
 
 
   return(
-   
+    
+<View style={[{
+      
+      flex:1,
+      justifyContent:"center",
+      alignItems:"center"
+      }]} >
+<View style={styles.view} >
+        <Text style={[{fontWeight:"bold" , fontSize:20 }]}  >HESAP OLUŞTUR</Text>
 
-      <View style={styles.view} >
-        <Text>registar</Text>
+
+ 
+     <View  style={styles.childCopont } >
+        <TextInput
+                style={styles.input}
+                placeholder="Ad "
+                value={userName}
+               onChangeText={setUserName}
+              />
+
+        <TextInput
+                style={styles.input}
+                placeholder="Soyadı"
+                value={lastName}
+               onChangeText={setLastName}
+              />
+
+              
+
+        </View> 
 
 
-      <TextInput
+        <View  style={styles.childCopont } >
+
+    
+        <TextInput
         style={styles.input}
         placeholder="E-posta"
         value={email}
         onChangeText={setEmail}
       />
+
+
+
 
 
 <TextInput
@@ -72,22 +125,29 @@ const register = async()=> {
         secureTextEntry
       />
 
+
+        </View>
+
       
-<TextInput
-        style={styles.input2}
-        placeholder="Şifre"
-       // value={password}
-        //onChangeText={setPassword}
-        secureTextEntry
-      />
+
 
       <Pressable 
-      onPress={register}
+      onPress={register }
       style={styles.buton}  >
         <Text style={[{color:"white"}]} >Kayıt Ol</Text>
       </Pressable>
+
+      <Pressable 
+      onPress={login }
+      style={styles.buton}  >
+        <Text style={[{color:"white"}]} >GİRİŞ YAP</Text>
+      </Pressable>
     
-      </View>)
+    
+      </View>
+
+</View>
+     )
 
    
 
@@ -103,8 +163,8 @@ const styles = StyleSheet.create({
     justifyContent:"center"
   },
   view:{
-    height:"42%",
-    width:"85%",
+    
+    width:"90%",
     borderWidth:0,
     borderRadius:16,
     backgroundColor:"#E2E2B6",
@@ -114,25 +174,25 @@ const styles = StyleSheet.create({
   input:{
     borderWidth:2,
     borderRadius:16,
-    height:"20%",
-    width:"60%",
+    height:"90%",
+    width:"50%",
     textAlign:"center",
-    marginBottom:36
+    margin:6
   },
 
   input2:{
     borderWidth:2,
     borderRadius:16,
-    height:"20%",
-    width:"60%",
+    height:"90%",
+    width:"50%",
     textAlign:"center",
-    marginBottom:12
+    margin:6
   },
   
   
   buton:{
     width:"30%",
-    height:"20%",
+    height:"10%",
     backgroundColor:"#03346E",
     alignItems:"center",
     justifyContent:"center",
@@ -146,6 +206,17 @@ const styles = StyleSheet.create({
     tinyLogo:{
       height:50,
       width:50
+    },
+    childCopont:{
+            flexDirection: 'row',
+            height:"auto",
+            width:"auto",
+            alignItems:"center",
+            margin:12
+
+            
+            
+
     }
 
 

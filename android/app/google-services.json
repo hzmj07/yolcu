@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "207397823966",
+    "project_id": "testproj-76e6a",
+    "storage_bucket": "testproj-76e6a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:207397823966:android:2bf235a9a1d36c18b5a94f",
+        "android_client_info": {
+          "package_name": "com.hzm"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdKnYiF9wupFwnQFONDV2qT7xN8DKewu8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

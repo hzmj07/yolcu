@@ -14,7 +14,7 @@ import {
 
 const Setting =() => {
 
-  return<Text> Setting </Text>
+  return<Text> serch </Text>
 }
 
 const styles = StyleSheet.create({

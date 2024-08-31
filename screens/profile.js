@@ -24,24 +24,26 @@ import {
 
 
 
-const Profile=({route})=>{
+const Profile=()=>{
 
  
 
   const navigation = useNavigation();
 
   const auth = getAuth();
-
-  if (!route || !route.params) {
-    return null; // veya bir yükleniyor animasyonu koyabilirsiniz
-  }
+  const UserData = auth.currentUser;
 
 
 
-  const data = route ;
+
+ 
 
 
-  const email = data.params.email
+  const email = UserData.email
+  const userName = UserData.displayName
+
+
+
 
   console.log(email);
 
@@ -51,7 +53,7 @@ const Profile=({route})=>{
       signOut(auth).then(() => {
         // Sign-out successful.
         console.log("Sign-out successful");
-        navigation.navigate("account");
+        navigation.navigate("login");
 
 
 
@@ -72,7 +74,7 @@ const Profile=({route})=>{
 
 
 
-          <Text style={[{fontSize:60,margin:22 , fontWeight:"bold"}]}  >UserName</Text>
+          <Text style={[{fontSize:60,margin:22 , fontWeight:"bold"}]}  >{userName}</Text>
 
            <Text  style={[{fontSize:20,margin:22  , fontWeight:"bold"}]} >{email}</Text>
 

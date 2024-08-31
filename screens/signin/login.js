@@ -14,15 +14,15 @@ import {
 } from 'react-native';
 
 import {  signInWithEmailAndPassword } from 'firebase/auth';
-import Auth from '../../firebaseConfig';
+import app from '../../firebaseConfig';
+
 import Profile from '../profile';
 import { NavigationContainer } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
+import { getAuth } from 'firebase/auth';
+import Registar from './registar';
 
-
-
-
-
+const Auth =getAuth(app) 
 
 
 
@@ -34,16 +34,17 @@ const Login=()=>{
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
 
-    const [posta , setPosta] = useState('');
-    const [isAuth , setAuth] = useState(false);
     const navigation = useNavigation();
     
 
-
+  
 
       
     
-      
+
+      function registar(){
+        navigation.navigate("registar");
+      }
   
 
 
@@ -52,10 +53,16 @@ const Login=()=>{
     try{
       const userData = await signInWithEmailAndPassword(Auth , email , password)
       console.log("login successful");
-      let veri = userData.user.email
-      setPosta(veri);
-      setAuth(true);
-      navigation.navigate("profile", {email:email});
+      const posta = userData.user.email
+      const userName = userData.user.displayName
+      const userid = userData.user.uid
+      
+
+
+      
+      navigation.navigate("app");
+      //console.log("uid", userData.user.uid)
+     
     }
     catch(error){
       console.error(error)
@@ -64,51 +71,57 @@ const Login=()=>{
 
   return(
    
-    
-      <View style={styles.view} >
-
+    <View style={[{
       
-         
+      flex:1,
+      justifyContent:"center",
+      alignItems:"center"
+      }]} >
 
-            {
-                !isAuth ?
-                null
-                : <Profile
-                email={posta}
-                />
-            }
-        
 
+
+<View style={styles.view} >
     
+<Text style={[{fontWeight:"bold" , fontSize:20 , margin:16}]}  >GİRİŞ YAP</Text>
 
-        <Text>login</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="E-posta"
-        value={email}
-        onChangeText={setEmail}
-      />
+       
+    <TextInput
+      style={styles.input}
+      placeholder="E-posta"
+      value={email}
+      onChangeText={setEmail}
+    />
 
 
 <TextInput
-        style={styles.input2}
-        placeholder="Şifre"
-        value={password}
-        onChangeText={setPassword}
-       // secureTextEntry
-      />
+      style={styles.input2}
+      placeholder="Şifre"
+      value={password}
+      onChangeText={setPassword}
+     // secureTextEntry
+    />
 
-      <Pressable
-      onPress={login}
-      style={styles.buton}>
-        <Text style={[{color:"white"}]} >Giriş Yap</Text>
-      </Pressable>
-     
+    <Pressable
+    onPress={login}
+    style={styles.buton}>
+      <Text style={[{color:"white"}]} >Giriş Yap</Text>
+    </Pressable>
 
+    <Pressable
+    onPress={registar}
+    style={styles.buton}>
+      <Text style={[{color:"white"}]} >Kayıt ol</Text>
+    </Pressable>
+   
+
+  
+
+  
+    </View>
+
+    </View>
     
 
-    
-      </View>
 
   )
 
@@ -122,8 +135,8 @@ const styles = StyleSheet.create({
     justifyContent:"center"
   },
   view:{
-    height:"42%",
-    width:"85%",
+    
+    width:"90%",
     borderWidth:0,
     borderRadius:16,
     backgroundColor:"#E2E2B6",
@@ -133,7 +146,7 @@ const styles = StyleSheet.create({
   input:{
     borderWidth:2,
     borderRadius:16,
-    height:"20%",
+    height:"15%",
     width:"60%",
     textAlign:"center",
     marginBottom:12
@@ -142,7 +155,7 @@ const styles = StyleSheet.create({
   input2:{
     borderWidth:2,
     borderRadius:16,
-    height:"20%",
+    height:"15%",
     width:"60%",
     textAlign:"center",
     marginBottom:36
@@ -151,7 +164,7 @@ const styles = StyleSheet.create({
   
   buton:{
     width:"30%",
-    height:"20%",
+    height:"10%",
     backgroundColor:"#03346E",
     alignItems:"center",
     justifyContent:"center",

@@ -5,7 +5,7 @@
  * @format
  */
 
-import React from 'react';
+import * as React from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -17,7 +17,7 @@ import {
   TextInput
 } from 'react-native';
  
-import { Home , Setting , Account } from './screens/index';
+import { Home , Setting , Account , Write } from './screens/index';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { AntDesign } from '@expo/vector-icons';
@@ -25,7 +25,9 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { createStackNavigator } from '@react-navigation/stack';
 import Profile from './screens/profile';
-
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+import Login from './screens/signin/login';
+import Registar from './screens/signin/registar';
 
 const Tab =createBottomTabNavigator()
 
@@ -47,33 +49,10 @@ const screenO ={
 
 
 const Stack = createStackNavigator();
-function Giris() {
-  return (
-    
-      <Stack.Navigator >
-         
-        <Stack.Screen 
-          name="account" 
-          component={Account} 
-          options={{ headerShown: false }} // Giriş ekranında başlık gizleme
-        />
-        
-      <Stack.Screen 
-                name="profile" 
-                component={Profile} 
-                options={{ headerShown: false }} // Giriş ekranında başlık gizleme
-              />
-       
-
-        
-        
-      </Stack.Navigator>
-    
-  );
-}
-
 const Alt=()=>{
-  return ( <Tab.Navigator screenOptions={screenO} >
+  return ( <Tab.Navigator
+  
+  screenOptions={screenO} >
       <Tab.Screen
       name="home"
       component={Home}
@@ -85,9 +64,33 @@ const Alt=()=>{
             
           </View>)}}}
       />
+
+
+<Tab.Screen
+      name="write"
+      component={Write}
+      options={{
+        tabBarShowLabel:false,
+        tabBarIcon: ({focused})=>{
+          return(<View style={{alignItems:"center" , justifyContent:"center"}}> 
+            <FontAwesome name="pencil-square-o" size={30} color={focused ? "#E2E2B6" : "#021526"} />
+            
+          </View>)}}}
+      />
+       <Tab.Screen 
+      name="serch"
+       component={Setting}
+       options={{
+        tabBarShowLabel:false,
+        tabBarIcon: ({focused})=>{
+          return(<View style={{alignItems:"center" , justifyContent:"center"}}> 
+          <FontAwesome name="search" size={30} color={focused ? "#E2E2B6" : "#021526"} />            
+          </View>)}}}
+       />
+
       <Tab.Screen 
-      name="Account"
-       component={Giris}
+      name="profil"
+       component={Profile}
        options={{
         tabBarShowLabel:false,
         tabBarIcon: ({focused})=>{
@@ -96,31 +99,62 @@ const Alt=()=>{
             
           </View>)}}}
        />     
-      <Tab.Screen 
-      name="Setting"
-       component={Setting}
-       options={{
-        tabBarShowLabel:false,
-        tabBarIcon: ({focused})=>{
-          return(<View style={{alignItems:"center" , justifyContent:"center"}}> 
-           <Ionicons name="settings-outline" size={30} color={focused ? "#E2E2B6" : "#021526"} />
-            
-          </View>)}}}
-       />
+     
       
     </Tab.Navigator>)
    
 }
+
+function Giris() {
+  return (
+    
+      <Stack.Navigator >
+         
+           <Stack.Screen 
+                name="login" 
+                component={Login} 
+                options={{ headerShown: false }} // kayı ekranında başlık gizleme
+              />
+<Stack.Screen 
+                name="registar" 
+                component={Registar} 
+                options={{ headerShown: false }} // kayı ekranında başlık gizleme
+              />
+
+<Stack.Screen 
+                name="app" 
+                component={Alt} 
+                options={{ headerShown: false }} // kayı ekranında başlık gizleme
+              />
+    
+
+        
+        
+      </Stack.Navigator>
+    
+  );
+};
+
+
+
+
+
 
 
 
 
 
 const App=()=>{
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+
   return(
 
     <NavigationContainer>
-      <Alt />
+      {isLoggedIn ? (
+        <Alt /> // Giriş yapıldıysa, Tab Navigator'u göster
+      ) : (
+        <Giris/> // Giriş yapılmadıysa, Login ekranını göster
+      )}
     </NavigationContainer>
   )
 };
