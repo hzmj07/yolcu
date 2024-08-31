@@ -146,7 +146,7 @@ function Giris() {
 
 const App=()=>{
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
-
+ 
   return(
 
     <NavigationContainer>
