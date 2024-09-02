@@ -16,8 +16,9 @@ import {
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import app from '../../firebaseConfig';
 import { useNavigation } from '@react-navigation/native';
-
+import { Loading } from '../loading';
 import { getAuth } from 'firebase/auth';
+import { Hata } from './login';
 
 const Auth =getAuth(app)
 
@@ -31,7 +32,10 @@ const Registar=()=>{
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [userName, setUserName] = useState('');
-  const [lastName , setLastName ]= useState(''); 
+  const [lastName , setLastName ]= useState('');
+  const [ isLoading , setLoading ] = useState(false);
+  const [hata , setHata] = useState(false);
+ 
   const navigation = useNavigation();
   
 console.log(email)
@@ -41,6 +45,7 @@ function login(){
 }
 
 const register = async () => {
+  setLoading(true)
   try {
     const userData = await createUserWithEmailAndPassword(Auth, email, password);
 
@@ -56,12 +61,18 @@ const register = async () => {
     const username = userData.user.displayName
 
 
-
+    setLoading(false);
+    setHata(false);
+    setEmail('');
+    setPassword('');
     navigation.navigate("login");
     console.log('Kullanıcı kaydı başarılı:', userData.user);
     
   } catch (error) {
+    setLoading(false);
     console.error('Hata oluştu:', error);
+    setHata(true);
+    
   }
 };
 
@@ -78,8 +89,16 @@ const register = async () => {
       justifyContent:"center",
       alignItems:"center"
       }]} >
-<View style={styles.view} >
-        <Text style={[{fontWeight:"bold" , fontSize:20 }]}  >HESAP OLUŞTUR</Text>
+    <View style={styles.view} >
+
+    <Text style={[{fontWeight:"bold" , fontSize:60,margin:16 }]}  >Write</Text>
+
+    <Image
+           style={styles.profilp}
+            source={require('../../sorce/pngwing.com.png')}
+          />
+
+        <Text style={[{fontWeight:"bold" , fontSize:20 ,marginBottom:20 }]}  >Registar</Text>
 
 
  
@@ -130,17 +149,18 @@ const register = async () => {
 
       
 
+        { hata ? <Hata/> : null }
 
       <Pressable 
       onPress={register }
       style={styles.buton}  >
-        <Text style={[{color:"white"}]} >Kayıt Ol</Text>
-      </Pressable>
+          { isLoading ? <Loading renk={"white"} /> : <Text style={({color:"white" ,fontWeight:"bold"})} >Kayıt Ol</Text>  }
+          </Pressable>
 
       <Pressable 
       onPress={login }
-      style={styles.buton}  >
-        <Text style={[{color:"white"}]} >GİRİŞ YAP</Text>
+      style={styles.buton2}  >
+        <Text style={[{color:"black"}]} >GİRİŞ YAP</Text>
       </Pressable>
     
     
@@ -165,26 +185,26 @@ const styles = StyleSheet.create({
   view:{
     
     width:"90%",
-    borderWidth:0,
+    borderWidth:1,
     borderRadius:16,
     backgroundColor:"#E2E2B6",
     alignItems:"center",
     justifyContent:"center"
   },
   input:{
-    borderWidth:2,
-    borderRadius:16,
+    borderBottomWidth:2,
+    borderRadius:0,
     height:"90%",
-    width:"50%",
+    width:"48%",
     textAlign:"center",
     margin:6
   },
 
   input2:{
-    borderWidth:2,
-    borderRadius:16,
+    borderBottomWidth:2,
+    borderRadius:0,
     height:"90%",
-    width:"50%",
+    width:"48%",
     textAlign:"center",
     margin:6
   },
@@ -192,12 +212,12 @@ const styles = StyleSheet.create({
   
   buton:{
     width:"30%",
-    height:"10%",
+    height:"6%",
     backgroundColor:"#03346E",
     alignItems:"center",
     justifyContent:"center",
     borderRadius:16,
-    marginBottom:12
+    marginBottom:16
   },
 
    
@@ -212,12 +232,28 @@ const styles = StyleSheet.create({
             height:"auto",
             width:"auto",
             alignItems:"center",
-            margin:12
+            margin:24
 
             
             
 
-    }
+    },
+    buton2:{
+      alignItems:"center",
+      justifyContent:"center",
+      borderRadius:16,
+      marginBottom:21,
+     
+   
+
+    },
+    profilp:{
+      height:240,
+      width:240,
+      margin:14
+    
+    },
+
 
 
 });

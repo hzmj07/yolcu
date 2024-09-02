@@ -104,50 +104,59 @@ const renderPosts =()=>{
   </View>
 
 
+
+
 <ScrollView style={styles.scroll}   >
 
 
-{ loading ? posts.map((value,index)=>{
-  return( <View
-   key={index}
-   style={styles.data}  >
+{ loading ? <ScrollView>
+
+  {
+     posts.map((value,index)=>{
 
 
-
-   <View style={styles.dataelememt} >
- 
-    <View style={styles.minCom} >
-   <Image
-       style={styles.profilp}
-        source={require('../sorce/profil.jpg')}
-      />
-    </View>
- 
- <View  style={styles.minCom} >
-      <Text>{value.author}</Text>
- </View>
- 
- 
- 
- <View style={styles.minCom}  >
-      <Text></Text>
- </View>
- 
- 
-    </View> 
- 
-    <View style={[{width :"100%",alignItems:"center",justifyContent:"center",borderWidth:0
-    }]} >
-    <Text style={styles.text} >{value.content}</Text>
+      return( <View
+       key={index}
+       style={styles.data}  >
+    
+    
+    
+       <View style={styles.dataelememt} >
+     
+        <View style={styles.minCom} >
+       <Image
+           style={styles.profilp}
+            source={require('../sorce/profil.jpg')}
+          />
+        </View>
+     
+     <View  style={styles.minCom} >
+          <Text>{value.author}</Text>
+     </View>
+     
+     
+     
+     <View style={styles.minCom}  >
+          <Text></Text>
+     </View>
+     
+     
+        </View> 
+     
+        <View style={[{width :"100%",alignItems:"center",justifyContent:"center",borderWidth:0
+        }]} >
+        <Text style={styles.text} >{value.content}</Text>
+          </View>
+      
       </View>
-  
-  </View>
-)
-
-})
-   
+    )
+    
+    })
+       
+  }
+</ScrollView>
    : <View style={[{flex:1}]} >
-       <Loading/>
+       <Loading renk={"black"} />
     </View> }
  
 
@@ -224,12 +233,12 @@ dataelememt:{
 
 
 },
-profilp:{
-  height:30,
-  width:30,
-  borderRadius:50
+  profilp:{
+    height:30,
+    width:30,
+    borderRadius:50
 
-},
+  },
 scroll:{
   flex:1,
   width:"100%",

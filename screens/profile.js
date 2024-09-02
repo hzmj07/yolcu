@@ -96,7 +96,7 @@ const Profile=()=>{
           
          style={styles.buton} >
 
-          <Text style={({color:"white" ,fontWeight:"bold"})} >Pay Settings</Text> 
+          <Text style={({color:"white" ,fontWeight:"bold"})} >Settings</Text> 
           </Pressable>
 
 

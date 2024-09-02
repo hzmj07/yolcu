@@ -19,7 +19,7 @@ import { collection, addDoc } from "firebase/firestore";
 import { UserData } from './signin/login';
 import firebase from 'firebase/app';
 import { getAuth } from 'firebase/auth';
-
+import { Loading } from './loading';
 
 //kullanıcı dostu post yazma sayfası yaz diğer sayfalarla uyumlu bir tasarım dili kullan 
 
@@ -32,6 +32,7 @@ const db = getFirestore(app)
 
 const Write =() => {
 
+  const [ isLoading , setLoading ] = useState(false);
   const [text, setText] = useState('');
  
   const maxLength = 300;
@@ -48,6 +49,7 @@ const Write =() => {
   
 
   const getData = async ()=>{
+    setLoading(true)
     try {
       const docRef = await addDoc(collection(db, "posts"), {
         author: user.displayName,
@@ -57,6 +59,7 @@ const Write =() => {
   
       });
       console.log("Document written with ID: ", docRef.id);
+      setLoading(false)
     } catch (e) {
       console.error("Error adding document: ", e);
     }
@@ -154,8 +157,8 @@ const Write =() => {
           onPress={getData} 
           
          style={styles.buton} >
-
-           <Text style={({color:"white" ,fontWeight:"bold"})} >Paylaş</Text> 
+          { isLoading ? <Loading renk={"white"} /> : <Text style={({color:"white" ,fontWeight:"bold"})} >Paylaş</Text>  }
+           
           </Pressable>
 
    
