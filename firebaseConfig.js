@@ -14,7 +14,7 @@ import 'firebase/auth'
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-<<<<<<< HEAD
+
 const firebaseConfig = {
   apiKey: "AIzaSyC61rOqRny9DatxI30ZomDqFZAZkObJM-0",
   authDomain: "testproj-76e6a.firebaseapp.com",
@@ -24,11 +24,8 @@ const firebaseConfig = {
   appId: "1:207397823966:web:9f0010219773f5e0b5a94f",
   measurementId: "G-YPNL7CV8J7"
 };
-=======
-{{ secrets.API_KEY }}
 
->>>>>>> 3ccf155bacecdbde335f14710c4b2cc9916918be
-console.log("kontrol")
+
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);

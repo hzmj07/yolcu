@@ -21,6 +21,11 @@ import firebase from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { Loading } from './loading';
 
+
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import Entypo from '@expo/vector-icons/Entypo';
 //kullanıcı dostu post yazma sayfası yaz diğer sayfalarla uyumlu bir tasarım dili kullan 
 
 
@@ -34,6 +39,7 @@ const Write =() => {
 
   const [ isLoading , setLoading ] = useState(false);
   const [text, setText] = useState('');
+  const [title , setTitle] = useState('');
  
   const maxLength = 300;
 
@@ -52,13 +58,16 @@ const Write =() => {
     setLoading(true)
     try {
       const docRef = await addDoc(collection(db, "posts"), {
-        author: user.displayName,
+        author: user.displayName, 
         content: text,
         date: "zaman",
-        title: "başlık",
+        title: title,
   
       });
       console.log("Document written with ID: ", docRef.id);
+      setText('');
+      setTitle('');
+
       setLoading(false)
     } catch (e) {
       console.error("Error adding document: ", e);
@@ -67,7 +76,6 @@ const Write =() => {
   
      
     
-
 
   //console.log(Auth().currentUser.uid)
   
@@ -95,7 +103,7 @@ const Write =() => {
         source={require('../sorce/profil.jpg')}
       />
       <View style={[{alignItems:"center" , justifyContent:"center"}]} >
-          <Text>{user.displayName}</Text>
+          <Text style={[{fontSize:25 , fontWeight:"bold"}]} >{user.displayName}</Text>
       </View>
      
       </View>
@@ -105,13 +113,14 @@ const Write =() => {
 
 
    <View style={[{alignItems:"center" , justifyContent:"center" , flex:1 }]} >
-     <View style={styles.content} >
+     <View style={[styles.content , { marginBottom:13, height:"50%",} ]} >
      <TextInput
-        style={styles.content}
-        placeholder="yaz..."
+        style={[styles.content , {   height:"50%",} ]}
+        placeholder="içerik"
         multiline={true}
         maxLength={maxLength}
         onChangeText={handleTextChange}
+        value={text}
       />
       <View style={[{ width:"90%" }]} >
      <Text   >
@@ -124,33 +133,26 @@ const Write =() => {
     </View>
 
 
-
-
-
-
-
-    <View style={[{height:"19%" , flexDirection: 'row' , borderWidth:0  }]} >
-
-      <Pressable style={styles.ekle} >
-      <Text> content </Text>
-
-    </Pressable>
-
-    <Pressable style={styles.ekle} >
-      <Text> content </Text>
-
-    </Pressable>
-
-    <Pressable style={styles.ekle} >
-      <Text> content </Text>
-
-    </Pressable>
-
-    <Pressable style={styles.ekle} >
-      <Text> content </Text>
-
-    </Pressable>
+    <View style={[styles.content , {  height:"10%",    marginBottom:16,} ]} >
+     <TextInput
+        style={[styles.content  ]}
+        placeholder="konu"
+        multiline={false}
+        //maxLength={maxLength}
+        onChangeText={setTitle}
+        value={title}
+      />
+      
+     
+  
     </View>
+
+
+
+
+
+
+
     
   
       <Pressable
@@ -206,8 +208,8 @@ const styles = StyleSheet.create({
     backgroundColor:"#E2E2B6",
     borderRadius:16,
     width:"90%",
-    height:"50%",
-    marginBottom:13,
+
+
     textAlignVertical: 'top'
   },
   headers:{

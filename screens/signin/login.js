@@ -92,12 +92,9 @@ const Login=()=>{
 
   return(
    
-    <View style={[{
-      
-      flex:1,
-      justifyContent:"center",
-      alignItems:"center"
-      }]} >
+    <KeyboardAvoidingView 
+    behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
+     style={{flex:1 , alignItems:"center" , justifyContent:"center"}} >
 
 
 
@@ -156,7 +153,7 @@ const Login=()=>{
   
     </View>
 
-    </View>
+    </KeyboardAvoidingView>
     
 
 

@@ -17,7 +17,7 @@ import {
   TextInput
 } from 'react-native';
  
-import { Home , Setting , Account , Write } from './screens/index';
+import { Home , Search , Account , Write } from './screens/index';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { AntDesign } from '@expo/vector-icons';
@@ -51,7 +51,7 @@ const screenO ={
 const Stack = createStackNavigator();
 const Alt=()=>{
   return ( <Tab.Navigator
-  
+ 
   screenOptions={screenO} >
       <Tab.Screen
       name="home"
@@ -79,7 +79,7 @@ const Alt=()=>{
       />
        <Tab.Screen 
       name="serch"
-       component={Setting}
+       component={Search}
        options={{
         tabBarShowLabel:false,
         tabBarIcon: ({focused})=>{
